@@ -1,0 +1,60 @@
+ID: <%= projectName %>
+_schema-version: "3.1"
+version: 0.0.1
+
+modules:
+
+ - name: <%= projectName %>-srv
+   type: java
+   path: srv
+   parameters:
+     memory: 1024M
+     disk-quota: 1024M
+     buildpack: sap_java_buildpack
+   properties:
+     TARGET_RUNTIME: tomee
+     JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'<%= hdiContainerName %>'}]"
+<% if(useNamedUser){ -%>
+     USE_NAMED_USER: true
+<% } -%>
+     SECONDARY_ROUTING_PERCENT: 0
+     SAP_JWT_TRUST_ACL: '[{"clientid":"sb-<%= projectName %>-srv", "identityzone": "*"}]'
+   provides:
+    - name: <%= projectName %>-srv-api
+      properties:
+        url: ${default-url}
+   requires:
+    - name: <%= projectName %>-uaa
+    - name: <%= hdiContainerName %>
+
+ - name: <%= projectName %>
+   type: nodejs
+   path: app
+   parameters:
+     memory: 256M
+     disk-quota: 256M
+     buildpack: nodejs_buildpack
+   requires:
+    - name: <%= projectName %>-uaa
+    - name: <%= projectName %>-srv-api
+      group: destinations
+      properties:
+        name: <%= projectName %>-srv
+        url: ~{url}
+        forwardAuthToken: true
+        timeout: 600000
+   properties:
+     CORS: '[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"<%= callingHost %>", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'
+     COOKIES: '{"SameSite": "None"}'
+     INCOMING_CONNECTION_TIMEOUT: 600000
+<% if(multiTenantSupport){ -%>
+     TENANT_HOST_PATTERN: '^(.*)-<%= cfSpace %>-<%= projectName %>.cfapps.(.*).hana.ondemand.com'
+<% } -%>
+
+resources:
+ - name: <%= projectName %>-uaa
+   type: com.sap.xs.uaa
+   parameters:
+      path: ./xs-security.json
+ - name: <%= hdiContainerName %>
+   type: org.cloudfoundry.existing-service

@@ -1,0 +1,85 @@
+{
+  "name": "generator-saphanaacademy-haa",
+  "version": "1.0.0",
+  "description": "SAP HANA Academy - SAP HANA Analytics Adapter",
+  "homepage": "https://www.youtube.com/saphanaacademy",
+  "author": {
+    "name": "SAP HANA Academy",
+    "email": "hanaacademy@sap.com",
+    "url": "https://www.youtube.com/saphanaacademy"
+  },
+  "files": [
+    "generators"
+  ],
+  "main": "generators/index.js",
+  "keywords": [
+    "haa",
+    "hana",
+    "hana-analytics-adapter",
+    "saphanaacademy",
+    "hanaacademy",
+    "dpe",
+    "digitalpartnerengineering",
+    "yeoman-generator"
+  ],
+  "devDependencies": {
+    "yeoman-test": "^1.7.0",
+    "yeoman-assert": "^3.1.0",
+    "eslint": "^6.6.0",
+    "prettier": "^1.19.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.3",
+    "eslint-config-prettier": "^6.6.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-config-xo": "^0.27.2",
+    "jest": "^24.8.0"
+  },
+  "engines": {
+    "npm": ">= 4.0.0"
+  },
+  "dependencies": {
+    "yeoman-generator": "^2.0.1",
+    "chalk": "^2.1.0",
+    "yosay": "^2.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "xo",
+      "prettier"
+    ],
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "rules": {
+      "prettier/prettier": "error"
+    },
+    "plugins": [
+      "prettier"
+    ]
+  },
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "jest"
+  },
+  "repository": "saphanaacademy/generator-saphanaacademy-haa",
+  "license": "MIT"
+}

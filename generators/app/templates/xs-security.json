@@ -1,0 +1,20 @@
+{
+    "xsappname": "<%= projectName %>",
+    "tenant-mode": "<%= tenantMode %>",
+    "scopes": [
+        {
+            "name": "$XSAPPNAME.Display",
+            "description": "Display"
+        }
+    ],
+    "role-templates": [
+        {
+            "name": "HAA_Viewer",
+            "description": "HANA Analytics Adapter Viewer",
+            "scope-references": [
+                "$XSAPPNAME.Display"
+            ],
+            "attribute-references": []
+        }
+    ]
+}
