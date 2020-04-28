@@ -1,5 +1,5 @@
 # generator-saphanaacademy-haa [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> SAP HANA Academy - SAP HANA Analytics Adapter Yeoman Generator
+> SAP HANA Academy - Yeoman Generator for SAP HANA Analytics Adapter
 
 ## Installation
 
