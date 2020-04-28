@@ -1,6 +1,6 @@
 {
   "name": "generator-saphanaacademy-haa",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Yeoman Generator for SAP HANA Analytics Adapter",
   "homepage": "https://www.youtube.com/saphanaacademy",
   "author": {
