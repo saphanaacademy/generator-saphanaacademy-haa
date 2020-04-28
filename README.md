@@ -1,5 +1,5 @@
 # generator-saphanaacademy-haa [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> SAP HANA Academy - Yeoman Generator for SAP HANA Analytics Adapter
+> Yeoman Generator for SAP HANA Analytics Adapter
 
 ## Installation
 
@@ -25,8 +25,7 @@ yo saphanaacademy-haa
 
 ## License
 
-MIT © [SAP](https://www.youtube.com/saphanaacademy)
-
+Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, Version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
 
 [npm-image]: https://badge.fury.io/js/generator-saphanaacademy-haa.svg
 [npm-url]: https://npmjs.org/package/generator-saphanaacademy-haa
