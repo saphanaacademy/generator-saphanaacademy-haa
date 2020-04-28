@@ -9,19 +9,19 @@ module.exports = class extends Generator {
     return this.prompt([{
       type: 'input',
       name: 'projectName',
-      message: 'How do you want to name this project?',
+      message: 'What project name would you like?',
       validate: (s) => {
         if (/^[a-zA-Z0-9_-]*$/g.test(s)) {
           return true;
         }
-        return 'Please use alphanumeric characters only for the project name.';
+        return 'Please only use alphanumeric characters for the project name.';
       },
       default: 'haa'
     },
     {
       type: 'confirm',
       name: 'newDir',
-      message: 'Would you like to create a new directory for the project?',
+      message: 'Would you like to create a new directory for this project?',
       default: true
     },
     {
@@ -39,25 +39,25 @@ module.exports = class extends Generator {
     {
       type: 'input',
       name: 'callingHost',
-      message: 'What is the host of the calling application (to be whitelisted)?',
+      message: 'What is the host of your client application?',
       default: 'tenant.region.sapanalytics.cloud'
     },
     {
       type: 'confirm',
       name: 'useNamedUser',
-      message: 'Will you be using a named HANA user?',
+      message: 'Will you be requiring named HANA users?',
       default: true
     },
     {
       type: 'confirm',
       name: 'multiTenantSupport',
-      message: 'Would you like to include multi-tenant application support?',
+      message: 'Would you like to add multi-tenant application support?',
       default: true
     },
     {
       type: 'input',
       name: 'cfSpace',
-      message: 'Which Cloud Foundry space you expect to deploy to?',
+      message: 'Which Cloud Foundry space do you intend to deploy to?',
       default: 'dev',
       validate: (s) => {
         if (/^[a-zA-Z0-9_-]*$/g.test(s)) {
