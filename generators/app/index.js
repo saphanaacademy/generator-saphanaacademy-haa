@@ -45,7 +45,7 @@ module.exports = class extends Generator {
     {
       type: 'confirm',
       name: 'useNamedUser',
-      message: 'Will you be configuring SSO (requires HANA shadow users)?',
+      message: 'Will you be configuring SSO (implies shadow users in HANA)?',
       default: true
     },
     {

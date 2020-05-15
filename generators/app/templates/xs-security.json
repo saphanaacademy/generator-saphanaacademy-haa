@@ -9,8 +9,8 @@
     ],
     "role-templates": [
         {
-            "name": "HAA_Viewer",
-            "description": "HANA Analytics Adapter Viewer",
+            "name": "HAA_Display",
+            "description": "HANA Analytics Adapter Display",
             "scope-references": [
                 "$XSAPPNAME.Display"
             ],
