@@ -48,7 +48,7 @@ modules:
      COOKIES: '{"SameSite": "None"}'
      INCOMING_CONNECTION_TIMEOUT: 600000
 <% if(multiTenantSupport){ -%>
-     TENANT_HOST_PATTERN: '^(.*)-<%= cfSpace %>-<%= projectName %>.cfapps.(.*).hana.ondemand.com'
+     TENANT_HOST_PATTERN: '^(.*)-${space}-<%= projectName %>.cfapps.(.*).hana.ondemand.com'
 <% } -%>
 
 resources:

@@ -45,27 +45,15 @@ module.exports = class extends Generator {
     {
       type: 'confirm',
       name: 'useNamedUser',
-      message: 'Will you be requiring named HANA users?',
+      message: 'Will you be configuring SSO (requires HANA shadow users)?',
       default: true
     },
     {
       type: 'confirm',
       name: 'multiTenantSupport',
-      message: 'Would you like to add multi-tenant application support?',
-      default: true
-    },
-    {
-      type: 'input',
-      name: 'cfSpace',
-      message: 'Which Cloud Foundry space do you intend to deploy to?',
-      default: 'dev',
-      validate: (s) => {
-        if (/^[a-zA-Z0-9_-]*$/g.test(s)) {
-          return true;
-        }
-        return 'Cloud Foundry space names contain alphanumeric characters only.';
-      },
-    }]).then((answers) => {
+      message: 'Would you like to add multi-tenant SaaS application support?',
+      default: false
+   }]).then((answers) => {
       if (answers.newDir) {
         this.destinationRoot(`${answers.projectName}`);
       }
