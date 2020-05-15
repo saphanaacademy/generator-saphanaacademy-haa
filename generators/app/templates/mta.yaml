@@ -24,7 +24,7 @@ modules:
       properties:
         url: ${default-url}
    requires:
-    - name: <%= projectName %>-uaa
+    - name: ${space}-<%= projectName %>-uaa
     - name: <%= hdiContainerName %>
 
  - name: <%= projectName %>
@@ -35,7 +35,7 @@ modules:
      disk-quota: 256M
      buildpack: nodejs_buildpack
    requires:
-    - name: <%= projectName %>-uaa
+    - name: ${space}-<%= projectName %>-uaa
     - name: <%= projectName %>-srv-api
       group: destinations
       properties:
@@ -52,7 +52,7 @@ modules:
 <% } -%>
 
 resources:
- - name: <%= projectName %>-uaa
+ - name: ${space}-<%= projectName %>-uaa
    type: com.sap.xs.uaa
    parameters:
       path: ./xs-security.json
