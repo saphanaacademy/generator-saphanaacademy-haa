@@ -1,20 +1,24 @@
 {
-    "xsappname": "<%= projectName %>",
-    "tenant-mode": "<%= tenantMode %>",
-    "scopes": [
-        {
-            "name": "$XSAPPNAME.Display",
-            "description": "Display"
-        }
-    ],
-    "role-templates": [
-        {
-            "name": "HAA_Display",
-            "description": "HANA Analytics Adapter Display",
-            "scope-references": [
-                "$XSAPPNAME.Display"
-            ],
-            "attribute-references": []
-        }
-    ]
+  "xsappname": "<%= projectName %>",
+  "tenant-mode": "<%= tenantMode %>",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Viewer"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "Viewer",
+      "scope-references": ["$XSAPPNAME.Viewer"]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "<%= projectName %>_Viewer",
+      "description": "<%= projectName %> Viewer",
+      "role-template-references": ["$XSAPPNAME.Viewer"]
+    }
+  ]
 }

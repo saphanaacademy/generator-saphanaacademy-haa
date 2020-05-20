@@ -14,9 +14,7 @@ modules:
    properties:
      TARGET_RUNTIME: tomee
      JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'<%= hdiContainerName %>'}]"
-<% if(useNamedUser){ -%>
-     USE_NAMED_USER: true
-<% } -%>
+     USE_NAMED_USER: <%= useNamedUser %>
      SECONDARY_ROUTING_PERCENT: 0
      SAP_JWT_TRUST_ACL: '[{"clientid":"sb-<%= projectName %>-srv", "identityzone": "*"}]'
    provides:
