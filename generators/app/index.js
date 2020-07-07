@@ -30,13 +30,6 @@ module.exports = class extends Generator {
         name: "hdiContainerName",
         message: "What is the name of your HDI container?",
         default: "hdi-container",
-        validate: (s) => {
-          if (/^[a-zA-Z0-9_-]*$/g.test(s)) {
-            return true;
-          }
-
-          return "HDI container names contain alphanumeric characters only.";
-        },
       },
       {
         type: "input",
