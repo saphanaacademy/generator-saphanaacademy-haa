@@ -2,11 +2,19 @@ ID: <%= projectName %>
 _schema-version: "3.1"
 version: 0.0.1
 
+parameters:
+  enable-parallel-deployments: true
+
 modules:
 
  - name: <%= projectName %>-srv
    type: java
    path: srv
+   build-parameters:
+     builder: custom
+     commands:
+      - mvn -B package
+     build-result: target/*.war
    parameters:
      memory: 1024M
      disk-quota: 1024M
@@ -16,7 +24,6 @@ modules:
      JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'<%= hdiContainerName %>'}]"
      USE_NAMED_USER: <%= useNamedUser %>
      SECONDARY_ROUTING_PERCENT: 0
-     SAP_JWT_TRUST_ACL: '[{"clientid":"sb-<%= projectName %>-srv", "identityzone": "*"}]'
    provides:
     - name: <%= projectName %>-srv-api
       properties:
@@ -45,9 +52,6 @@ modules:
      CORS: '[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"<%= callingHost %>", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'
      COOKIES: '{"SameSite": "None"}'
      INCOMING_CONNECTION_TIMEOUT: 600000
-<% if(multiTenantSupport){ -%>
-     TENANT_HOST_PATTERN: '^(.*)-${space}-<%= projectName %>.cfapps.(.*).hana.ondemand.com'
-<% } -%>
 
 resources:
  - name: <%= projectName %>-uaa

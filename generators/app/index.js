@@ -39,27 +39,20 @@ module.exports = class extends Generator {
       },
       {
         type: "confirm",
-        name: "useNamedUser",
-        message: "Will you be configuring SSO (implies shadow users in HANA)?",
+        name: "authorization",
+        message: "Would you like authorization?",
         default: true,
       },
       {
         type: "confirm",
-        name: "multiTenantSupport",
-        message: "Would you like to add multi-tenant SaaS application support?",
+        name: "useNamedUser",
+        message: "Will you be configuring SSO (implies shadow users in HANA)?",
         default: false,
       },
     ]).then((answers) => {
       if (answers.newDir) {
         this.destinationRoot(`${answers.projectName}`);
       }
-
-      if (answers.multiTenantSupport) {
-        answers.tenantMode = "shared";
-      } else {
-        answers.tenantMode = "dedicated";
-      }
-
       this.config.set(answers);
     });
   }
@@ -89,9 +82,7 @@ module.exports = class extends Generator {
 
   end() {
     this.log("");
-    this.log(
-      "You can download the SAP HANA Analytics Adapter WAR file from https://tools.hana.ondemand.com/#hanatools"
-    );
+    this.log("Don't forget to add the SAP HANA Analytics Adapter WAR file (java-xsahaa.war) to the target folder. You can download the SAP HANA Analytics Adapter from https://tools.hana.ondemand.com/#hanatools");
     this.log("");
   }
 };

@@ -1,24 +1,44 @@
 {
   "xsappname": "<%= projectName %>",
-  "tenant-mode": "<%= tenantMode %>",
+  "tenant-mode": "dedicated",
   "scopes": [
     {
+<% if(authorization){ -%>
       "name": "$XSAPPNAME.Viewer",
       "description": "Viewer"
+<% } else { -%>
+      "name": "uaa.user",
+      "description": "UAA"
+<% } -%>
     }
   ],
   "role-templates": [
     {
+<% if(authorization){ -%>
       "name": "Viewer",
       "description": "Viewer",
-      "scope-references": ["$XSAPPNAME.Viewer"]
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+<% } else { -%>
+      "name": "Token_Exchange",
+      "description": "UAA Token Exchange",
+      "scope-references": [
+        "uaa.user"
+      ]
+<% } -%>
     }
-  ],
+  ]
+<% if(authorization){ -%>
+  ,
   "role-collections": [
     {
       "name": "<%= projectName %>_Viewer",
-      "description": "<%= projectName %> Viewer",
-      "role-template-references": ["$XSAPPNAME.Viewer"]
+      "description": "Viewing access",
+      "role-template-references": [
+        "$XSAPPNAME.Viewer"
+      ]
     }
   ]
+<% } -%>
 }

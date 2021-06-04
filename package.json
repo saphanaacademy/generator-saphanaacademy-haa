@@ -1,18 +1,22 @@
 {
   "name": "generator-saphanaacademy-haa",
-  "version": "0.0.6",
-  "description": "Yeoman Generator for SAP HANA Analytics Adapter aka HAA",
-  "homepage": "https://www.youtube.com/saphanaacademy",
+  "displayName": "SAP HANA Academy HAA",
+  "description": "Yeoman Generator for SAP HANA Analytics Adapter (HAA)",
+  "version": "0.0.7",
+  "homepage": "https://www.youtube.com/playlist?list=PLkzo92owKnVwQ-0oT78691fqvHrYXd5oN",
   "author": {
     "name": "SAP HANA Academy",
     "email": "hanaacademy@sap.com",
-    "url": "https://www.youtube.com/saphanaacademy"
+    "url": "https://www.youtube.com/playlist?list=PLkzo92owKnVwQ-0oT78691fqvHrYXd5oN"
   },
   "files": [
-    "generators"
+    "generators",
+    "yeoman.png"
   ],
   "main": "generators/index.js",
   "keywords": [
+    "mta",
+    "multitarget",
     "haa",
     "hana",
     "hana-analytics-adapter",
@@ -20,6 +24,9 @@
     "hanaacademy",
     "dpe",
     "digitalpartnerengineering",
+    "partner",
+    "innovation",
+    "lab",
     "yeoman-generator"
   ],
   "devDependencies": {
@@ -57,7 +64,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": ""
     }
   },
   "eslintConfig": {
@@ -80,6 +87,5 @@
     "pretest": "eslint .",
     "test": "jest"
   },
-  "repository": "saphanaacademy/generator-saphanaacademy-haa",
-  "license": "Apache-2.0"
+  "repository": "saphanaacademy/generator-saphanaacademy-haa"
 }

@@ -6,8 +6,10 @@
       "source": "/sap/bc/ina",
       "destination": "<%= projectName %>-srv",
       "httpMethods": ["POST", "GET"],
-      "authenticationType": "xsuaa",
-      "scope": "$XSAPPNAME.Viewer"
+<% if(authorization){ -%>
+      "scope": "$XSAPPNAME.Viewer",
+<% } -%>
+      "authenticationType": "xsuaa"
     },
     {
       "source": "/sap/bc/ina",
