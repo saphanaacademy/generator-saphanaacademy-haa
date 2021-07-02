@@ -16,6 +16,12 @@ Then generate your new project:
 yo saphanaacademy-haa
 ```
 
+You can update settings of an existing project via the sub-generator:
+
+```bash
+yo saphanaacademy-haa:update
+```
+
 ## Getting To Know Yeoman
 
  * Yeoman has a heart of gold.
