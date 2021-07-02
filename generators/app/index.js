@@ -32,23 +32,38 @@ module.exports = class extends Generator {
         default: "hdi-container",
       },
       {
-        type: "input",
-        name: "callingHost",
-        message: "What is the host of your client application?",
-        default: "tenant.region.sapanalytics.cloud",
-      },
-      {
         type: "confirm",
         name: "authorization",
         message: "Would you like authorization?",
         default: true,
       },
       {
+        type: "input",
+        name: "clientHostname",
+        message: "What is the hostname of the client application that will be accessing HAA? Use * for wildcard.",
+        validate: (s) => {
+          if (s === "*") {
+            return true;
+          }
+          if (/^[a-zA-Z0-9.-]*$/g.test(s)) {
+            return true;
+          }
+          return "Please only use alphanumeric characters for the client application hostname or use * for wildcard.";
+        },
+        default: "*"
+      },
+      {
+        type: "confirm",
+        name: "personalizeJWT",
+        message: "Would you like HAA to propagate the application user to SAP HANA Cloud?",
+        default: false
+      },
+      {
         type: "confirm",
         name: "useNamedUser",
-        message: "Will you be configuring SSO (implies shadow users in HANA)?",
-        default: false,
-      },
+        message: "Would you like HAA to connect to SAP HANA Cloud via JWT-based SSO (this implies shadow users in SAP HANA Cloud)?",
+        default: false
+      }
     ]).then((answers) => {
       if (answers.newDir) {
         this.destinationRoot(`${answers.projectName}`);

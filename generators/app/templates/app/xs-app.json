@@ -4,7 +4,7 @@
   "routes": [
     {
       "source": "/sap/bc/ina",
-      "destination": "<%= projectName %>-srv",
+      "destination": "srv",
       "httpMethods": ["POST", "GET"],
 <% if(authorization){ -%>
       "scope": "$XSAPPNAME.Viewer",
@@ -13,7 +13,7 @@
     },
     {
       "source": "/sap/bc/ina",
-      "destination": "<%= projectName %>-srv",
+      "destination": "srv",
       "httpMethods": ["OPTIONS"],
       "authenticationType": "none"
     },
