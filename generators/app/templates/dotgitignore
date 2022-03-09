@@ -1,0 +1,7 @@
+mta_archives/
+node_modules/
+default-*.json
+.env
+.yo-rc.json
+.vscode/
+.DS_Store

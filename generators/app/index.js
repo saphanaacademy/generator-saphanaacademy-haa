@@ -81,7 +81,9 @@ module.exports = class extends Generator {
       })
       .forEach((file) => {
         const sOrigin = this.templatePath(file);
-        const sTarget = this.destinationPath(file);
+        let fileDest = file;
+        fileDest = fileDest.replace('dotgitignore', '.gitignore');
+        const sTarget = this.destinationPath(fileDest);
         this.fs.copyTpl(sOrigin, sTarget, this.config.getAll());
       });
   }
