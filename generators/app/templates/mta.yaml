@@ -21,7 +21,7 @@ modules:
       disk-quota: 1024M
       buildpack: sap_java_buildpack
     properties:
-      TARGET_RUNTIME: tomee
+      TARGET_RUNTIME: tomee7
       JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'<%= hdiContainerName %>'}]"
       PERSONALIZE_JWT: <%= personalizeJWT %>
       USE_NAMED_USER: <%= useNamedUser %>
