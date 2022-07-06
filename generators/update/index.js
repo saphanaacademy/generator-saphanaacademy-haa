@@ -61,13 +61,21 @@ module.exports = class extends Generator {
           var lines = String(content).split("\n");
           for (var i = 1; i <= lines.length; i++) {
             var line = lines[i - 1];
+            var pos = line.search("TARGET_RUNTIME:");
+            if (pos !== -1) {
+              var indent = "";
+              for (var j = 0; j < pos; j++) {
+                indent += " ";
+              }
+              line = indent + "TARGET_RUNTIME: tomee7";
+            }
             var pos = line.search("JBP_CONFIG_RESOURCE_CONFIGURATION:");
             if (pos !== -1) {
               var indent = "";
               for (var j = 0; j < pos; j++) {
                 indent += " ";
               }
-              line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'`+ hdiContainerName + `'}]"`
+              line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'`+ hdiContainerName + `'}]"`;
             }
             var pos = line.search("- name: " + hdiContainerNameOld);
             if (pos !== -1) {
@@ -83,7 +91,7 @@ module.exports = class extends Generator {
               for (var j = 0; j < pos; j++) {
                 indent += " ";
               }
-              line = indent + "CORS: " + `'[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"` + clientHostname + `", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'`
+              line = indent + "CORS: " + `'[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"` + clientHostname + `", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'`;
             }
             pos = line.search("PERSONALIZE_JWT:");
             if (pos !== -1) {
