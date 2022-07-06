@@ -67,7 +67,7 @@ module.exports = class extends Generator {
               for (var j = 0; j < pos; j++) {
                 indent += " ";
               }
-              line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'`+ hdiContainerName + `'}]"`
+              line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'`+ hdiContainerName + `'}]"`
             }
             var pos = line.search("- name: " + hdiContainerNameOld);
             if (pos !== -1) {
