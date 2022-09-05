@@ -41,4 +41,11 @@
     }
   ]
 <% } -%>
+  ,
+  "oauth2-configuration": {
+    "token-validity": 3600,
+    "redirect-uris": [
+      "https://*-<%= projectName %>.cfapps.*.hana.ondemand.com/login/callback"
+    ]
+  }
 }

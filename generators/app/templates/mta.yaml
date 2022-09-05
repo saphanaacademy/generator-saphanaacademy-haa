@@ -39,6 +39,12 @@ modules:
   # ------------------------------------------------------------
     type: approuter.nodejs
     path: app
+    build-parameters:
+      ignore:
+        - default-*.json
+        - .env
+        - "*node_modules*"
+        - package-lock.json
     parameters:
       memory: 256M
       disk-quota: 1024M
