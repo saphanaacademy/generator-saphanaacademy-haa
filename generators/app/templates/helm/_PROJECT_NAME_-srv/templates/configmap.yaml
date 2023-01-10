@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.services.srv.name }}
+data:
+  TARGET_RUNTIME: {{ .Values.services.srv.targetRuntime }}
+  JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'{{ .Values.services.hdi.name }}'}]"
+  PERSONALIZE_JWT: '{{ .Values.services.srv.personalizeJWT }}'
+  USE_NAMED_USER: '{{ .Values.services.srv.useNamedUser }}'
+  SECONDARY_ROUTING_PERCENT: '0'

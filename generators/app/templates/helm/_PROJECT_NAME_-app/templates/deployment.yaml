@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.app.name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app: {{ .Values.services.app.name }}
+spec:
+  replicas: <% if(externalSessionManagement){ -%>2<% }else{ -%>1<% } -%>
+
+  selector:
+    matchLabels:
+      app: {{ .Values.services.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.services.app.name }}
+    spec:
+      containers:
+        - image: "{{ .Values.dockerID }}/{{ .Values.services.app.image.repository }}:{{ .Values.services.app.image.tag }}"
+          name: {{ .Values.services.app.name }}
+          imagePullPolicy: {{ .Values.services.app.image.pullPolicy }}
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.app.image.port }}
+          env:
+            - name: SERVICE_BINDING_ROOT
+              value: /bindings
+<% if(externalSessionManagement){ -%>
+            - name: EXT_SESSION_MGT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.services.redis.bindingSecretName }}
+                  key: EXT_SESSION_MGT
+<% } -%>
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.services.app.name }}
+          volumeMounts:
+            - name: <%= projectName %>-uaa
+              mountPath: "/bindings/<%= projectName %>-uaa"
+              readOnly: true
+<% if(externalSessionManagement){ -%>
+            - name: <%= projectName %>-redis
+              mountPath: "/bindings/<%= projectName %>-redis"
+<% } -%>
+<% if(dockerRepositoryVisibility === 'private'){ -%>
+      imagePullSecrets:
+        - name: {{ .Values.services.app.image.imagePullSecretName }}
+<% } -%>
+      volumes:
+        - name: <%= projectName %>-uaa
+          secret:
+            secretName: {{ .Values.services.uaa.bindingSecretName }}
+<% if(externalSessionManagement){ -%>
+        - name: <%= projectName %>-redis
+          secret:
+            secretName: {{ .Values.services.redis.bindingSecretName }}
+<% } -%>

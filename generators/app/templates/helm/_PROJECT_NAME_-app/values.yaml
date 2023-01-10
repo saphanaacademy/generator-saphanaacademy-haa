@@ -1,0 +1,37 @@
+dockerID: <%= dockerID %>
+clusterDomain: <%= clusterDomain %>
+gateway: <%= gateway %>
+services:
+  app:
+    name: <%= projectName %>-app
+    clientHostName: '<%= clientHostname %>'
+    image:
+<% if(dockerRepositoryName !== ''){ -%>
+      repository: <%= dockerRepositoryName %>
+      tag: "<%= projectName %>-app"
+<% } else { -%>
+      repository: <%= projectName %>-app
+      tag: "latest"
+<% } -%>
+      pullPolicy: Always
+<% if(dockerRepositoryVisibility === 'private'){ -%>
+      imagePullSecretName: <%= dockerRegistrySecretName %>
+<% } -%>
+      port: 5000
+    service:
+      port: 5000
+  srv:
+    name: <%= projectName %>-srv
+    service:
+      port: 8080
+  uaa:
+    name: <%= projectName %>-uaa
+    bindingName: <%= projectName %>-uaa-binding
+    bindingSecretName: <%= projectName %>-uaa-binding-secret
+<% if(externalSessionManagement){ -%>
+  redis:
+    name: <%= projectName %>-redis
+    bindingSecretName: <%= projectName %>-redis-binding-secret
+    service:
+      port: 6379
+<% } -%>

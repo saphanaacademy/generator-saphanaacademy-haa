@@ -2,6 +2,10 @@
 const Generator = require("yeoman-generator");
 
 module.exports = class extends Generator {
+  initializing() {
+    process.chdir(this.destinationRoot());
+  }
+
   prompting() {
     return this.prompt([
       {
@@ -52,72 +56,139 @@ module.exports = class extends Generator {
     let clientHostname = this.config.get("clientHostname");
     let personalizeJWT = this.config.get("personalizeJWT");
     let useNamedUser = this.config.get("useNamedUser");
-    this.fs.copy(
-      this.destinationPath("mta.yaml"),
-      this.destinationPath("mta.yaml"),
-      {
-        process: function (content) {
-          var output = "";
-          var lines = String(content).split("\n");
-          for (var i = 1; i <= lines.length; i++) {
-            var line = lines[i - 1];
-            var pos = line.search("TARGET_RUNTIME:");
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+    if (this.config.get('BTPRuntime') === "Kyma") {
+      // kyma
+      this.fs.copy(
+        this.destinationPath("helm/" + this.config.get("projectName") + "-srv/values.yaml"),
+        this.destinationPath("helm/" + this.config.get("projectName") + "-srv/values.yaml"),
+        {
+          process: function (content) {
+            var output = "";
+            var lines = String(content).split("\n");
+            for (var i = 1; i <= lines.length; i++) {
+              var line = lines[i - 1];
+              var pos = line.search("name: " + hdiContainerNameOld);
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "name: " + hdiContainerName;
               }
-              line = indent + "TARGET_RUNTIME: tomee7";
-            }
-            var pos = line.search("JBP_CONFIG_RESOURCE_CONFIGURATION:");
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+              pos = line.search("personalizeJWT:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "personalizeJWT: " + personalizeJWT;
               }
-              line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'`+ hdiContainerName + `'}]"`;
-            }
-            var pos = line.search("- name: " + hdiContainerNameOld);
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+              pos = line.search("useNamedUser:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "useNamedUser: " + useNamedUser;
               }
-              line = indent + "- name: " + hdiContainerName;
+              output += line + "\n";
             }
-            pos = line.search("CORS:");
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+            return output;
+          },
+        }
+      );
+      this.fs.copy(
+        this.destinationPath("helm/" + this.config.get("projectName") + "-app/values.yaml"),
+        this.destinationPath("helm/" + this.config.get("projectName") + "-app/values.yaml"),
+        {
+          process: function (content) {
+            var output = "";
+            var lines = String(content).split("\n");
+            for (var i = 1; i <= lines.length; i++) {
+              var line = lines[i - 1];
+              var pos = line.search("clientHostName:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "clientHostName: '" + clientHostname + "'";
               }
-              line = indent + "CORS: " + `'[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"` + clientHostname + `", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'`;
+              output += line + "\n";
             }
-            pos = line.search("PERSONALIZE_JWT:");
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+            return output;
+          },
+        }
+      );
+    } else {
+      // cloud foundry
+      this.fs.copy(
+        this.destinationPath("mta.yaml"),
+        this.destinationPath("mta.yaml"),
+        {
+          process: function (content) {
+            var output = "";
+            var lines = String(content).split("\n");
+            for (var i = 1; i <= lines.length; i++) {
+              var line = lines[i - 1];
+              var pos = line.search("TARGET_RUNTIME:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "TARGET_RUNTIME: tomee7";
               }
-              line = indent + "PERSONALIZE_JWT: " + personalizeJWT;
-            }
-            pos = line.search("USE_NAMED_USER:");
-            if (pos !== -1) {
-              var indent = "";
-              for (var j = 0; j < pos; j++) {
-                indent += " ";
+              pos = line.search("JBP_CONFIG_RESOURCE_CONFIGURATION:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "JBP_CONFIG_RESOURCE_CONFIGURATION: " + `"['tomee7/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'` + hdiContainerName + `'}]"`;
               }
-              line = indent + "USE_NAMED_USER: " + useNamedUser;
+              pos = line.search("- name: " + hdiContainerNameOld);
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "- name: " + hdiContainerName;
+              }
+              pos = line.search("CORS:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "CORS: " + `'[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"` + clientHostname + `", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'`;
+              }
+              pos = line.search("PERSONALIZE_JWT:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "PERSONALIZE_JWT: " + personalizeJWT;
+              }
+              pos = line.search("USE_NAMED_USER:");
+              if (pos !== -1) {
+                var indent = "";
+                for (var j = 0; j < pos; j++) {
+                  indent += " ";
+                }
+                line = indent + "USE_NAMED_USER: " + useNamedUser;
+              }
+              output += line + "\n";
             }
-            output += line + "\n";
-          }
-          return output;
-        },
-      }
-    );
+            return output;
+          },
+        }
+      );
+    }
   }
 
-  install() {}
+  install() { }
 
   end() {
     this.log("");

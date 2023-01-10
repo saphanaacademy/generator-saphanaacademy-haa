@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.srv.name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app: {{ .Values.services.srv.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.services.srv.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.services.srv.name }}
+    spec:
+      containers:
+        - image: "{{ .Values.dockerID }}/{{ .Values.services.srv.image.repository }}:{{ .Values.services.srv.image.tag }}"
+          name: {{ .Values.services.srv.name }}
+          imagePullPolicy: {{ .Values.services.srv.image.pullPolicy }}
+          resources:
+            limits:
+              memory: 2048Mi
+              cpu: "1"
+            requests:
+              memory: 1024Mi
+              cpu: "0.2"
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.srv.image.port }}
+          env:
+            - name: SERVICE_BINDING_ROOT
+              value: /bindings
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.services.srv.name }}
+          volumeMounts:
+            - name: <%= projectName %>-uaa
+              mountPath: "/bindings/<%= projectName %>-uaa"
+              readOnly: true
+            - name: <%= projectName %>-hdi
+              mountPath: "/bindings/<%= projectName %>-hdi"
+              readOnly: true
+<% if(dockerRepositoryVisibility === 'private'){ -%>
+      imagePullSecrets:
+        - name: {{ .Values.services.srv.image.imagePullSecretName }}
+<% } -%>
+      volumes:
+        - name: <%= projectName %>-uaa
+          secret:
+            secretName: {{ .Values.services.uaa.bindingSecretName }}
+        - name: <%= projectName %>-hdi
+          secret:
+            secretName: {{ .Values.services.hdi.bindingSecretName }}

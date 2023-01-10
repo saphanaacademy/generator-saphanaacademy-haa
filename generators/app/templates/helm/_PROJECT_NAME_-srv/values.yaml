@@ -1,0 +1,35 @@
+dockerID: <%= dockerID %>
+clusterDomain: <%= clusterDomain %>
+gateway: <%= gateway %>
+services:
+  app:
+    name: <%= projectName %>-app
+  srv:
+    name: <%= projectName %>-srv
+    targetRuntime: tomee7
+    personalizeJWT: <%= personalizeJWT %>
+    useNamedUser: <%= useNamedUser %>
+    image:
+<% if(dockerRepositoryName !== ''){ -%>
+      repository: <%= dockerRepositoryName %>
+      tag: "<%= projectName %>-srv"
+<% } else { -%>
+      repository: <%= projectName %>-srv
+      tag: "latest"
+<% } -%>
+      pullPolicy: Always
+<% if(dockerRepositoryVisibility === 'private'){ -%>
+      imagePullSecretName: <%= dockerRegistrySecretName %>
+<% } -%>
+      port: 8080
+    service:
+      port: 8080
+  uaa:
+    name: <%= projectName %>-uaa
+    xsappname: <%= projectName %>
+    bindingName: <%= projectName %>-uaa-binding
+    bindingSecretName: <%= projectName %>-uaa-binding-secret
+  hdi:
+    name: <%=hdiContainerName %>
+    bindingName: <%= projectName %>-hdi-binding
+    bindingSecretName: <%= projectName %>-hdi-binding-secret

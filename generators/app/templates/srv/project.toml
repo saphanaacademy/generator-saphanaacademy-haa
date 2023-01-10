@@ -1,0 +1,26 @@
+[project]
+id = "<%= projectName %>"
+name = "<%= projectName %>"
+version = "0.0.1"
+
+[build]
+builder = "paketobuildpacks/builder:base"
+
+[[build.env]]
+name = "BP_JAVA_APP_SERVER"
+value = "tomee"
+
+[[build.env]]
+name = "BP_TOMEE_VERSION"
+value = "7.*"
+
+[[build.env]]
+name = "BP_JVM_VERSION"
+value = "8"
+
+[[build.env]]
+name = "BP_TOMCAT_ENV_PROPERTY_SOURCE_DISABLED"
+value = "FALSE"
+
+[[build.buildpacks]]
+uri = "cki.common.repositories.cloud.sap/unified-runtime/java-buildpack:latest"

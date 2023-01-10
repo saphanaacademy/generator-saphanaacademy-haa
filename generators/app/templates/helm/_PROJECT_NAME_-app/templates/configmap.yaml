@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.services.app.name }}
+data:
+  COOKIES: '{"SameSite": "None"}'
+  CORS: '[{"uriPattern": "^/sap/bc/ina/(.*)$", "allowedOrigin": [{"host":"{{ .Values.services.app.clientHostName }}", "protocol":"https"}], "allowedMethods": ["GET", "POST", "OPTIONS"], "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"], "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]}]'
+  INCOMING_CONNECTION_TIMEOUT: '600000'
+  destinations: |
+    [
+      {
+        "name": "srv",
+        "url": "http://{{ .Values.services.srv.name }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.services.srv.service.port }}",
+        "forwardAuthToken": true
+      }
+    ]
