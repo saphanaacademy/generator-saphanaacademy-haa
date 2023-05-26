@@ -5,3 +5,4 @@ mta_archives/
 default-env.json
 .env
 .yo-rc.json
+.vscode/

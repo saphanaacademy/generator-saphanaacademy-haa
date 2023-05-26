@@ -64,10 +64,10 @@ module.exports = class extends Generator {
         name: "projectName",
         message: "What project name would you like?",
         validate: (s) => {
-          if (/^[a-zA-Z0-9_-]*$/g.test(s)) {
+          if (/^[a-zA-Z][a-zA-Z0-9]*$/g.test(s)) {
             return true;
           }
-          return "Please only use alphanumeric characters for the project name.";
+          return "Please start with a letter and only use alphanumeric characters for the project name.";
         },
         default: answers.projectName
       },
@@ -279,15 +279,17 @@ module.exports = class extends Generator {
       })
       .forEach((file) => {
         if (!((file.substring(0, 5) === 'helm/' || file.includes('/Dockerfile') || file === 'dotdockerignore' || file === 'Makefile' || file === 'srv/project.toml') && answers.get('BTPRuntime') !== 'Kyma')) {
-          if (!((file.includes('-redis.yaml') || file.includes('destinationrule.yaml')) && answers.get('externalSessionManagement') === false)) {
-            if (!((file === 'mta.yaml' || file === 'xs-security.json') && answers.get('BTPRuntime') !== 'CF')) {
-              const sOrigin = this.templatePath(file);
-              let fileDest = file;
-              fileDest = fileDest.replace('_PROJECT_NAME_', answers.get('projectName'));
-              fileDest = fileDest.replace('dotgitignore', '.gitignore');
-              fileDest = fileDest.replace('dotdockerignore', '.dockerignore');
-              const sTarget = this.destinationPath(fileDest);
-              this.fs.copyTpl(sOrigin, sTarget, this.config.getAll());
+          if (!(file.includes('/Dockerfile') && answers.get('buildCmd') === 'pack')) {
+            if (!((file.includes('-redis.yaml') || file.includes('destinationrule.yaml')) && answers.get('externalSessionManagement') === false)) {
+              if (!((file === 'mta.yaml' || file === 'xs-security.json') && answers.get('BTPRuntime') !== 'CF')) {
+                const sOrigin = this.templatePath(file);
+                let fileDest = file;
+                fileDest = fileDest.replace('_PROJECT_NAME_', answers.get('projectName'));
+                fileDest = fileDest.replace('dotgitignore', '.gitignore');
+                fileDest = fileDest.replace('dotdockerignore', '.dockerignore');
+                const sTarget = this.destinationPath(fileDest);
+                this.fs.copyTpl(sOrigin, sTarget, this.config.getAll());
+              }
             }
           }
         }
